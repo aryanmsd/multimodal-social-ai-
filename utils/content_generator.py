@@ -4,7 +4,7 @@ import os
 class ContentGenerator:
     def __init__(self):
         genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
-        self.model = genai.GenerativeModel('gemini-2.5-flash-lite')
+        self.model = genai.GenerativeModel('gemini-2.5-flash')
     
     def generate_caption(self, image_analysis, platform, tone):
         """Generate social media caption based on image analysis"""
