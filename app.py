@@ -42,17 +42,17 @@ col1, col2 = st.columns(2)
 with col1:
     st.subheader("📤 Upload Image")
     uploaded_file = st.file_uploader(
-        "Choose an image...", 
-        type=['jpg', 'jpeg', 'png', 'webp']
-    )
-    
-    if uploaded_file:
-        image = Image.open(uploaded_file)
-        st.image(image, caption="Uploaded Image", width=None)
-        
-        # Save temporarily
-        temp_path = "temp_image.jpg"
-        image.save(temp_path)
+    "Choose an image...",
+    type=["jpg", "jpeg", "png", "webp"]
+)
+
+if uploaded_file:
+    if uploaded_file.size > 5 * 1024 * 1024:
+        st.error("🚫 Image too large. Please upload under 5MB.")
+        st.stop()
+
+    image = Image.open(uploaded_file)
+    st.image(image, caption="Uploaded Image", width=None)
 
 with col2:
     st.subheader("✨ Generated Content")
@@ -62,8 +62,7 @@ with col2:
         # Step 1: Analyze image
         with st.spinner("🔍 Analyzing image with Gemini AI..."):
             try:
-                analysis = analyzer.analyze_image(temp_path)
-                
+                analysis = analyzer.analyze_image(uploaded_file)
                 with st.expander("📊 Image Analysis", expanded=True):
                     st.markdown(analysis)
             except Exception as e:
@@ -102,10 +101,6 @@ with col2:
                     
                 except Exception as e:
                     st.error(f"Error generating image prompt: {str(e)}")
-        
-        # Cleanup
-        if os.path.exists(temp_path):
-            os.remove(temp_path)
 
 # Footer with features
 st.sidebar.markdown("---")
