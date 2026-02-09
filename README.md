@@ -1,3 +1,4 @@
+<img width="1919" height="809" alt="image" src="https://github.com/user-attachments/assets/6608e2ed-6f2c-4158-bc92-beab5c950eb4" />
 # Multimodal Social AI 🚀
 
 Multimodal Social AI is an AI-powered social media content generation system built using **Google Gemini**.  
@@ -42,14 +43,15 @@ The project is designed with scalability in mind and can be easily extended into
    ```bash
    git clone https://github.com/aryanmsd/multimodal-social-ai-
    cd multimodal-social-ai-
-Create and activate a virtual environment
+
+2.Create and activate a virtual environment
 
 python -m venv venv
 source venv/bin/activate        # macOS / Linux
 venv\Scripts\activate           # Windows
 Install dependencies
 
-pip install -r requirements.txt
+3. pip install -r requirements.txt
 🔐 Setup API Key
 Set your Google Gemini API Key as an environment variable:
 
@@ -68,6 +70,8 @@ Create a fun Instagram caption about summer beach vibes
 AI Output
 
 Sun, sand, and salty air 🌊☀️ — where worries fade and summer memories begin!
+
+
 📁 Project Structure
 multimodal-social-ai-/
 │── app.py
@@ -94,3 +98,4 @@ Aryan MSD
 Computer Science Undergraduate | Generative AI Enthusiast
 
 🔗 GitHub: https://github.com/aryanmsd
+
