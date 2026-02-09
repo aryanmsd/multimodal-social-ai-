@@ -14,7 +14,7 @@ def resize_image(image, max_size=(512, 512)):
 class ImageAnalyzer:
     def __init__(self):
         genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
-        self.model = genai.GenerativeModel("gemini-2.5-flash")
+        self.model = genai.GenerativeModel("gemini-2.5-flash-lite")
 
     def analyze_image(self, image_file):
         """
