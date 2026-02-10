@@ -1,9 +1,7 @@
 import streamlit as st
 from utils.image_analyzer import ImageAnalyzer
 from utils.content_generator import ContentGenerator
-from utils.image_generator import generate_image
 from PIL import Image
-import os
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -15,7 +13,8 @@ st.set_page_config(page_title="AI Social Media Generator", layout="wide")
 
 st.title("🎨 AI-Powered Social Media Content Generator")
 st.markdown(
-    "Upload an image and generate **captions + AI-generated images** using Google Gemini and Stable Diffusion."
+    "Upload an image and generate **platform-specific captions** and "
+    "**AI image prompts** using Google Gemini."
 )
 
 # -----------------------------
@@ -26,6 +25,9 @@ if "analysis" not in st.session_state:
 
 if "caption" not in st.session_state:
     st.session_state.caption = None
+
+if "image_prompt" not in st.session_state:
+    st.session_state.image_prompt = None
 
 # -----------------------------
 # Initialize components
@@ -54,7 +56,7 @@ tone = st.sidebar.selectbox(
 )
 
 st.sidebar.markdown("---")
-st.sidebar.info("🤖 Powered by Google Gemini + Stable Diffusion")
+st.sidebar.info("🤖 Powered by Google Gemini")
 
 # -----------------------------
 # Main layout
@@ -78,7 +80,7 @@ with col1:
             st.stop()
 
         image = Image.open(uploaded_file)
-        st.image(image, caption="Uploaded Image", use_column_width=True)
+        st.image(image, caption="Uploaded Image", use_container_width=True)
 
 # -----------------------------
 # Column 2: Generated content
@@ -86,7 +88,7 @@ with col1:
 with col2:
     st.subheader("✨ Generated Content")
 
-    # -------- Button: Generate text content --------
+    # -------- Generate analysis + caption --------
     if uploaded_file and st.button("🚀 Generate Content", type="primary"):
 
         # Step 1: Analyze image
@@ -109,42 +111,45 @@ with col2:
                 st.error(f"Error generating caption: {e}")
                 st.stop()
 
-    # -------- Display stored analysis --------
+        # Reset old prompt when regenerating
+        st.session_state.image_prompt = None
+
+    # -------- Display analysis --------
     if st.session_state.analysis:
         with st.expander("📊 Image Analysis", expanded=True):
             st.markdown(st.session_state.analysis)
 
-    # -------- Display stored caption --------
+    # -------- Display caption --------
     if st.session_state.caption:
         st.markdown("### 📝 Generated Caption")
         st.success(st.session_state.caption)
         st.code(st.session_state.caption)
 
     # ===============================
-    # STEP 4: Checkbox (outside button)
+    # Image Prompt Generation (Option 1)
     # ===============================
     if st.session_state.analysis:
         st.markdown("---")
-        generate_ai_image = st.checkbox("🎨 Generate AI Image for this post")
+        generate_prompt = st.checkbox("🎨 Generate AI Image Prompt for this post")
 
-        # ===============================
-        # STEP 5: Generate AI Image
-        # ===============================
-        if generate_ai_image:
-            with st.spinner("🎨 Generating AI image for social media..."):
+        if generate_prompt:
+            with st.spinner("🧠 Generating AI image prompt..."):
                 try:
-                    image_prompt = generator.generate_image_prompt(
+                    st.session_state.image_prompt = generator.generate_image_prompt(
                         description=st.session_state.analysis,
-                        style="high-quality social media post, vibrant, professional"
+                        style="high-quality social media image, professional, vibrant, detailed"
                     )
-
-                    ai_image = generate_image(image_prompt)
-
-                    st.markdown("### 🖼️ AI Generated Image")
-                    st.image(ai_image, width=True)
-
                 except Exception as e:
-                    st.error(f"Image generation failed: {e}")
+                    st.error(f"Error generating image prompt: {e}")
+
+    # -------- Display image prompt --------
+    if st.session_state.image_prompt:
+        st.markdown("### 🖼️ AI Image Prompt")
+        st.info(st.session_state.image_prompt)
+        st.code(st.session_state.image_prompt)
+        st.caption(
+            "💡 Use this prompt in DALL·E, Midjourney, Stable Diffusion, Leonardo AI, etc."
+        )
 
 # -----------------------------
 # Footer / Help
@@ -153,15 +158,15 @@ st.sidebar.markdown("---")
 st.sidebar.markdown("### ✨ Features")
 st.sidebar.markdown("✅ Image understanding (Gemini Vision)")
 st.sidebar.markdown("✅ Platform-specific captions")
-st.sidebar.markdown("✅ AI image generation (Stable Diffusion)")
-st.sidebar.markdown("✅ True multimodal AI pipeline")
+st.sidebar.markdown("✅ AI image prompt generation")
+st.sidebar.markdown("✅ Stable multimodal pipeline")
 
 with st.expander("📖 How to Use"):
     st.markdown("""
     1. Upload an image (under 5MB)
     2. Select platform and tone
     3. Click **Generate Content**
-    4. Optionally generate an AI image for the post
+    4. Optionally generate an AI image prompt
 
-    This app demonstrates **image → text → image** multimodal AI.
+    This app demonstrates **image → text → image-prompt** multimodal AI.
     """)

@@ -1,34 +1,54 @@
-# Created by venv; see https://docs.python.org/3/library/venv.html
-# Virtual environments
-venv/
-venv_social_ai/
-fresh_env/
-env/
-ENV/
-
+# -----------------------------
 # Python
-*.pyc
+# -----------------------------
 __pycache__/
 *.py[cod]
 *$py.class
 
-# Environment variables
+# -----------------------------
+# Virtual Environments
+# -----------------------------
+venv/
+env/
+ENV/
+venv_social_ai/
+fresh_env/
+
+# -----------------------------
+# Environment Variables / Secrets
+# -----------------------------
 .env
 .env.local
+.streamlit/secrets.toml
 
-# Temporary files
-temp_image.jpg
-*.tmp
+# -----------------------------
+# Streamlit
+# -----------------------------
+.streamlit/
 
-# IDE
+# -----------------------------
+# OS Files
+# -----------------------------
+.DS_Store
+Thumbs.db
+
+# -----------------------------
+# IDE / Editor
+# -----------------------------
 .vscode/
 .idea/
 *.swp
 *.swo
 
-# OS
-.DS_Store
-Thumbs.db
+# -----------------------------
+# Temporary / Test Files
+# -----------------------------
+temp_image.jpg
+*.tmp
+test_replicate.py
+test_*.py
 
-# Streamlit
-.streamlit/
+# -----------------------------
+# Logs
+# -----------------------------
+*.log
